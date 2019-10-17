@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Flickzee</title>
+<script >
+  function search(){
+    const Http = new XMLHttpRequest();
+    const url='/search';
+    var params = 'query='+document.getElementById('query').value;
+    Http.open("GET", url+"?"+params, true);
+    Http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    Http.send(null);
+
+    Http.onreadystatechange = (e) => {
+      if(Http.readyState==4){
+        document.getElementById("movie").innerHTML = '';
+        document.getElementById("movie").innerHTML = '<tr><th>Name</th><th>Year</th><th>IMDb Rating</th><th>Language</th></tr>'
+        var result = JSON.parse(Http.responseText);
+        for(var i=0;i<result.length;i++){
+            document.getElementById("movie").innerHTML += '<tr><td>'+result[i].MovieName+'</td><td>'+result[i].Year+'</td><td>'+result[i].IMDbRating+'</td><td>'+result[i].Language+'</td></tr>';
+        }
+      }
+    }
+  }
+</script>
+<style type="text/css">
+.bs-example{
+	font-family: sans-serif;
+	position: relative;
+	margin: 50px;
+}
+.typeahead, .tt-query {
+	border: 2px solid #CCCCCC;
+	border-radius: 8px;
+	font-size: 24px;
+	height: 30px;
+	line-height: 30px;
+	outline: medium none;
+	padding: 8px 12px;
+	width: 396px;
+}
+.typeahead {
+	background-color: #FFFFFF;
+}
+.typeahead:focus {
+	border: 2px solid #0097CF;
+}
+.tt-query {
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+.button {
+  background-color: #0097CF; /* Green */
+  border: none;
+  color: white;
+  padding: 16px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+.button1 {
+  background-color: white;
+  color: black;
+  border: 2px solid #0097CF;
+}
+
+.button1:hover {
+  background-color: #0097CF;
+  color: white;
+}
+#movie {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#movie td, #movie th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#movie tr:nth-child(even){background-color: #f2f2f2;}
+
+#movie tr:hover {background-color: #ddd;}
+
+#movie th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+</style>
+</head>
+<body>
+    <div class="page-header">
+        <center><h1>Flickzee Search App</h1></center>
+    </div>
+    <div class="bs-example">
+        <center>
+          <input id="query" type="text" class="typeahead tt-query" placeholder="Type your Query"><br>
+          <button onclick="search()" class="button button1" >Search</button>
+        </center>
+        <table id="movie">
+
+        </table>
+    </div>
+</body>
+</html>
